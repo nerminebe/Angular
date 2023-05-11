@@ -1,0 +1,116 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-plain">
+                    <div class="header">
+                        <h4 class="title">Payment List</h4>
+                        <p class="category">##</p>
+                    </div>
+                    <div class="content table-responsive table-full-width">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th> Method </th>
+                                    <th> Status </th>
+                                    <th> Amount </th>
+                                    <th> Payment Date </th>
+                                    <th> Num Order </th>
+                                    <th> Action </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let p of paymentList">
+                                    <td>{{p.paymentStatus}}</td>
+                                    <td>{{p.paymentMethod}}</td>
+                                    <td>{{p.amount}}</td>
+                                    <td>{{p.paymentDate}}</td>
+                                    <td><a href= "http://localhost/#">{{p.orderId}}</a></td>
+                                    <td>
+                                        <button (click)="deletePayment(p.paymentDate)" class="btn btn-danger">Supprimer</button>
+                                        <button (click)="openPopupForUpdate(p)" class="btn btn-info">Modifier</button>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br><br><br>
+
+                        <!-- Button to trigger the popup -->
+                      <div style="display:flex;justify-content:center;">   <button class="btn btn-primary" (click)="openPopupForCreate()">Khalasni</button>
+                      </div>
+                        <!-- The popup content -->
+                        <div class="modal" tabindex="-1" role="dialog" *ngIf="showModal" style="display: block; ">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                        <div class="modal-header bg-primary text-white" style="background-color: #bb1111">
+
+                                        <button *ngIf="!isUpdate"  type="button" class="btn-close text-white" aria-label="Close" (click)="closePopupForUpdate()"></button>
+                                        <button *ngIf="isUpdate"  type="button" class="btn-close text-white" aria-label="Close" (click)="closePopupForCreate()"></button>
+
+                                    </div>
+                                    <div class="modal-body custom-modal-body">
+                                        <!-- Form inside the popup -->
+
+                                        <h2 *ngIf="!isUpdate" class="text-center mb-4">Ajouter votre Payment</h2>
+                                        <h2 *ngIf="isUpdate" class="text-center mb-4">Modifer votre Payment</h2>
+
+                                        <form (ngSubmit)="onSubmit()"  #boutiqueForm="ngForm" class="p-4 border rounded">
+                                            <div class="form-group">
+
+                                                <label>Payment Method  :   </label>
+                                                <select [(ngModel)]="selectedPaymentStatus">
+                                                    <option *ngFor="let status of paymentStatusOptions" [ngValue]="status">{{ status }}</option>
+                                                </select>
+
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="paymentMethod" hidden>paymentStatus :</label>
+                                                <input type="hidden" id="paymentMethod" name="paymentMethod" value="true" >
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="amount">amount :</label>
+                                                <input class="form-control" id="amount" name="amount" [(ngModel)]="payment.amount">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="paymentDate" hidden></label>
+                                                <input type="hidden" [(ngModel)]="payment.paymentDate" id="paymentDate" name="paymentDate" [value]="getCurrentDate()">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="order">order :</label>
+                                                <input type="text" class="form-control" id="order" name="order" [(ngModel)]="payment.orderId" value="NO05114">
+                                            </div>
+
+
+
+
+                                            <div class="text-center">
+                                                <button *ngIf="!isUpdate" type="submit" class="btn btn-danger" [disabled]="!boutiqueForm.valid">Ajouter</button>
+                                                <button *ngIf="isUpdate" type="submit" class="btn btn-info" [disabled]="!boutiqueForm.valid">Modifier</button>
+                                            </div>
+
+
+                                        </form>
+
+
+
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button *ngIf="!isUpdate" type="button" class="btn btn-secondary" (click)="closePopupForCreate()">Close</button>
+                                        <button *ngIf="isUpdate" type="button" class="btn btn-secondary" (click)="closePopupForUpdate()">Close</button>
+
+                                    </div>
+
+                                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        </div>
+    </div>
+</div>
